@@ -51,6 +51,26 @@ var handler = function (request, response)
    					
 			});
 	}
+	else if(urlPath == '/users')
+	{
+		var body = '';
+			request.on('data', function (data) {
+	            body += data;
+	            if (body.length > 1e5) { 
+	                request.connection.destroy();
+	            }
+        	});
+        	request.on('end', function () {
+            	var post = body;
+   				response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+   				var	results = [];
+   				restaurantsModule.getRestaurants(post, function(data) {
+   					results = data;
+		  			response.end('{"results": '+JSON.stringify(results)+'}');
+   				});
+   					
+			});
+	}
 	else
 	{
 		console.log(urlPath);
