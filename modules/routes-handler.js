@@ -1,3 +1,4 @@
+var mongoose = require('./db-connect');
 var qs = require('querystring');
 var restaurantsModule = require('./restaurants');
 var addressModule = require('./address');
@@ -53,6 +54,7 @@ var handler = function (request, response)
 	}
 	else if(urlPath == '/users')
 	{
+		var t = require('./testdb');
 		var body = '';
 			request.on('data', function (data) {
 	            body += data;

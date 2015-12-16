@@ -19,5 +19,8 @@
   "repository": {
     "type": "git",
     "url": "https://git.heroku.com/heroku-favres-server.git"
+  },
+  "dependencies": {
+    "mongoose": "^4.3.1"
   }
 }
