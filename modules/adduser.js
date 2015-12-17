@@ -15,8 +15,7 @@ var addUser = function(userToBeAdded, callback) {
 				  name: userToBeAdded.name,
 				  username: userToBeAdded.username,
 				  password: userToBeAdded.password,
-				  email: userToBeAdded.email,
-				  favourites: []
+				  email: userToBeAdded.email
 				});
 		
 				newUser.save(function(err) {

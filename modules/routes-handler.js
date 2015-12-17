@@ -88,18 +88,68 @@ var handler = function (request, response)
 	            }
         	});
         	request.on('end', function () {
-        		//try{
+        		try{
             	var post = JSON.parse(body);
             	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
    				var userAuth = require('./gettoken');
    				userAuth.getAuth(post, function(message, user){
    					response.end('{"message": "'+message+'", "user": '+JSON.stringify(user)+'}');
    				});
-	        //    }
-	            // catch(e){
-	            // 	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
-	            // 	response.end('{"message": "Invalid JSON Object."}');
-	            // }
+	           }
+	            catch(e){
+	            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+	            	response.end('{"message": "Invalid JSON Object."}');
+	            }
+			});
+	}
+	else if(urlPath == '/favourites')
+	{
+		console.log(request.url);
+		var body = '';
+			request.on('data', function (data) {
+	            body += data;
+	            if (body.length > 1e5) { 
+	                request.connection.destroy();
+	            }
+        	});
+        	request.on('end', function () {
+        		try{
+            	var post = JSON.parse(body);
+            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+   				var getFav = require('./getfav');
+   				getFav.getfav(post, function(message, favs){
+   					response.end('{"message": "'+message+'", "favs": '+JSON.stringify(favs)+'}');
+   				});
+	           }
+	            catch(e){
+	            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+	            	response.end('{"message": "Invalid JSON Object."}');
+	            }
+			});
+	}
+	else if(urlPath == '/favourites/post')
+	{
+		console.log(request.url);
+		var body = '';
+			request.on('data', function (data) {
+	            body += data;
+	            if (body.length > 1e5) { 
+	                request.connection.destroy();
+	            }
+        	});
+        	request.on('end', function () {
+        		try{
+            	var post = JSON.parse(body);
+            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+   				var addfav = require('./addfav');
+   				addfav.addFav(post, function(message){
+   					response.end('{"message": "'+message+'"}');
+   				});
+	            }
+	            catch(e){
+	            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+	            	response.end('{"message": "Invalid JSON Object."}');
+	            }
 			});
 	}
 	else
