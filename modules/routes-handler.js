@@ -52,9 +52,9 @@ var handler = function (request, response)
    					
 			});
 	}
-	else if(urlPath == '/users')
+	else if(urlPath == '/addusers')
 	{
-		var t = require('./testdb');
+		console.log(request.url);
 		var body = '';
 			request.on('data', function (data) {
 	            body += data;
@@ -63,14 +63,18 @@ var handler = function (request, response)
 	            }
         	});
         	request.on('end', function () {
-            	var post = body;
-   				response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
-   				var	results = [];
-   				restaurantsModule.getRestaurants(post, function(data) {
-   					results = data;
-		  			response.end('{"results": '+JSON.stringify(results)+'}');
+        		try{
+            	var post = JSON.parse(body);
+            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+   				var adduser = require('./adduser');
+   				adduser.addUser(post, function(message){
+   					response.end('{"message": "'+message+'"}');
    				});
-   					
+	            }
+	            catch(e){
+	            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+	            	response.end('{"message": "Invalid JSON Object."}');
+	            }
 			});
 	}
 	else
