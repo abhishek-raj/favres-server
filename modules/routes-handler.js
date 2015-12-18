@@ -152,6 +152,31 @@ var handler = function (request, response)
 	            }
 			});
 	}
+	else if(urlPath == '/favourites/post/delete')
+	{
+		console.log(request.url);
+		var body = '';
+			request.on('data', function (data) {
+	            body += data;
+	            if (body.length > 1e5) { 
+	                request.connection.destroy();
+	            }
+        	});
+        	request.on('end', function () {
+        		try{
+            	var post = JSON.parse(body);
+            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+   				var removefav = require('./removefav');
+   				removefav.removeFav(post, function(message){
+   					response.end('{"message": "'+message+'"}');
+   				});
+	            }
+	            catch(e){
+	            	response.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'});
+	            	response.end('{"message": "Invalid JSON Object."}');
+	            }
+			});
+	}
 	else
 	{
 		console.log(urlPath);
